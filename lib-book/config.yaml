@@ -1,0 +1,15 @@
+mysql: 
+  host: 127.0.0.1
+  port: 3306
+  user: gobooklib
+  password: gobooklib
+  db: gobooklib
+lib-user:
+  host: 127.0.0.1
+  port: 8080
+lib-config:
+  host: 127.0.0.1
+  port: 8081
+lib-storage:
+  host: 127.0.0.1
+  port: 8082
