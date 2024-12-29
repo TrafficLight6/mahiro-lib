@@ -1,0 +1,5 @@
+proxy-url-list:
+  - http://127.0.0.1:8080/user
+  - http://127.0.0.1:8081/config
+  - http://127.0.0.1:8082/storage
+  - http://127.0.0.1:8083/book

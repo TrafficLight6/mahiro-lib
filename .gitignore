@@ -1,1 +1,4 @@
-./for-test.txt
+for-test.txt
+*/tmp
+.gitignore
+lib-storage/storage/picture/test.jpg
