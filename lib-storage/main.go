@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -95,15 +96,20 @@ func main() {
 						fileList = nil
 					} else {
 						db := connectMysql()
-						sqlString := "INSERT INTO gbl_storage (id,chapter_id,`type`,`name`) VALUES(DEFAULT,?,?,?)"
-						chapterId := c.Query("chapter_id")
-
+						sqlString := "INSERT INTO gbl_storage (id,`type`,`name`) VALUES(DEFAULT,?,?)"
 						for _, file := range files {
-							name := hashSha256(strconv.Itoa(int(time.Now().Unix()))+file.Filename) + "---" + file.Filename
-							dst := "./storage/text/" + name
+							fileContext, _ := file.Open()
+							defer fileContext.Close()
+							hash := sha256.New()
+							io.Copy(hash, fileContext)
+							fileHash := hex.EncodeToString(hash.Sum(nil))
+							fileExtension := filepath.Ext(file.Filename)
+
+							name := fileHash + fileExtension
+							dst := "./storage/text/" + strconv.Itoa(int(time.Now().Unix())) + name
 							c.SaveUploadedFile(file, dst)
 							fileList = append(fileList, name)
-							_, err = db.Exec(sqlString, chapterId, "text", name)
+							_, err = db.Exec(sqlString, "text", name)
 							if err != nil {
 								fmt.Println("fail in sql inserting of updating:", err)
 							}
@@ -155,9 +161,8 @@ func main() {
 				fileList = nil
 			} else {
 				if responeInfomation.Success {
-					chapterId := c.Query("chapter_id")
 					db := connectMysql()
-					sqlString := "INSERT INTO gbl_storage (id,chapter_id,`type`,`name`) VALUES(DEFAULT,?,?,?)"
+					sqlString := "INSERT INTO gbl_storage (id,`type`,`name`) VALUES(DEFAULT,?,?)"
 					form, _ := c.MultipartForm()
 					files := form.File["file"]
 					if files == nil {
@@ -166,11 +171,18 @@ func main() {
 						fileList = nil
 					} else {
 						for _, file := range files {
-							fileName := hashSha256(strconv.Itoa(int(time.Now().Unix()))+file.Filename) + "---" + file.Filename
-							dst := "./storage/picture/" + fileName
+							fileContext, _ := file.Open()
+							defer fileContext.Close()
+							hash := sha256.New()
+							io.Copy(hash, fileContext)
+							fileHash := hex.EncodeToString(hash.Sum(nil))
+							fileExtension := filepath.Ext(file.Filename)
+
+							name := fileHash + strconv.Itoa(int(time.Now().Unix())) + fileExtension
+							dst := "./storage/text/" + name
 							c.SaveUploadedFile(file, dst)
-							fileList = append(fileList, fileName)
-							_, _ = db.Exec(sqlString, chapterId, "picture", fileName)
+							fileList = append(fileList, name)
+							_, err = db.Exec(sqlString, "picture", name)
 						}
 						defer db.Close()
 						resultMessage = "success"

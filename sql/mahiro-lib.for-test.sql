@@ -1,5 +1,5 @@
 ﻿# Host: 127.0.0.1  (Version: 5.7.26)
-# Date: 2025-01-18 21:09:44
+# Date: 2025-01-18 21:21:08
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -73,7 +73,6 @@ INSERT INTO `gbl_config` VALUES (1,'guest-allow','true');
 DROP TABLE IF EXISTS `gbl_storage`;
 CREATE TABLE `gbl_storage` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `chapter_id` int(11) NOT NULL DEFAULT '0',
   `type` varchar(255) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`Id`)
