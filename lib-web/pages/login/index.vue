@@ -12,8 +12,8 @@
                 <br><br>
                 <el-button type="primary" class="login-button">Login</el-button>
                 <br><br>
-                <NuxtLink to="./"><el-button type="primary" link>Forget password</el-button></NuxtLink>
-                <NuxtLink to="./"><el-button type="primary" link>Register</el-button></NuxtLink>
+                <!-- <NuxtLink to="./"><el-button type="primary" link>Forget password</el-button></NuxtLink>
+                <NuxtLink to="./"><el-button type="primary" link>Register</el-button></NuxtLink> -->
             </el-form>
         </div>
     </div>
