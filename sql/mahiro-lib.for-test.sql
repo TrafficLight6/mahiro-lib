@@ -1,5 +1,5 @@
 ﻿# Host: 127.0.0.1  (Version: 5.7.26)
-# Date: 2024-10-02 20:19:31
+# Date: 2025-01-18 21:09:44
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -35,6 +35,7 @@ CREATE TABLE `gbl_chapter` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `book_id` varchar(255) DEFAULT NULL,
   `hash` varchar(255) NOT NULL DEFAULT '',
+  `file_list` longtext NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
