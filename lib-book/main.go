@@ -294,7 +294,7 @@ func main() {
 		} else {
 			db.Select(&books, "SELECT id,book_name,type,vision,hash FROM gbl_book WHERE id = ?", bookId)
 			if books == nil {
-				resultMessage = "fail in selecting"
+				resultMessage = "can not selecting a book which id is `" + strconv.Itoa(bookId) + "`"
 				success = false
 				bookHash = ""
 			} else {
