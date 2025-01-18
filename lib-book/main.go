@@ -278,6 +278,38 @@ func main() {
 
 	})
 
+	r.GET("/book/gethash/", func(c *gin.Context) {
+		db := connectMysql()
+		var bookId int
+		var books []BookList
+		var resultMessage string
+		var success bool
+		var bookHash string
+
+		bookId, err := strconv.Atoi(c.Query("book_id"))
+		if err != nil {
+			resultMessage = "fail in reading book id"
+			success = false
+			bookHash = ""
+		} else {
+			db.Select(&books, "SELECT id,book_name,type,vision,hash FROM gbl_book WHERE id = ?", bookId)
+			if books == nil {
+				resultMessage = "fail in selecting"
+				success = false
+				bookHash = ""
+			} else {
+				resultMessage = "success"
+				success = true
+				bookHash = books[0].BookHash
+			}
+		}
+		c.JSON(200, gin.H{
+			"message": resultMessage,
+			"success": success,
+			"hash":    bookHash,
+		})
+	})
+
 	r.Run(":8083")
 }
 
