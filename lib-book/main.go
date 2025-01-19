@@ -22,6 +22,7 @@ type Config struct {
 	LibUser    LibUserApplicationConfig    `yaml:"lib-user"`
 	LibStorage LibStorageApplicationConfig `yaml:"lib-config"`
 	LibConfiig LibConfigApplicationConfig  `yaml:"lib-storage"`
+	LibProxy   LibProxyApplicationConfig   `yaml:"lib-proxy"`
 }
 
 type DatabaseConfig struct {
@@ -42,6 +43,11 @@ type LibConfigApplicationConfig struct {
 	Port int    `yaml:"port"`
 }
 type LibStorageApplicationConfig struct {
+	Host string `yaml:"host"`
+	Port int    `yaml:"port"`
+}
+
+type LibProxyApplicationConfig struct {
 	Host string `yaml:"host"`
 	Port int    `yaml:"port"`
 }
@@ -83,7 +89,7 @@ func main() {
 		} else {
 			//Get the user information
 			config = readConfig()
-			url := "http://" + config.LibUser.Host + ":" + strconv.Itoa(config.LibUser.Port) + "/user/check/" + "?token=" + token
+			url := "http://" + config.LibProxy.Host + ":" + strconv.Itoa(config.LibProxy.Port) + "/user/check/" + "?token=" + token
 			respone := httpGetRequest(url)
 			//Json unmarshal
 			var responeInfomation UserCheckJson
@@ -140,7 +146,7 @@ func main() {
 		} else {
 			//Get the user information
 			config = readConfig()
-			url := "http://" + config.LibUser.Host + ":" + strconv.Itoa(config.LibUser.Port) + "/user/check/" + "?token=" + token
+			url := "http://" + config.LibProxy.Host + ":" + strconv.Itoa(config.LibProxy.Port) + "/user/check/" + "?token=" + token
 			respone := httpGetRequest(url)
 			//Json unmarshal
 			var responeInfomation UserCheckJson

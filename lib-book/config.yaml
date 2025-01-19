@@ -13,3 +13,6 @@ lib-config:
 lib-storage:
   host: 127.0.0.1
   port: 8082
+lib-proxy: 
+  host: 127.0.0.1
+  port: 7622
