@@ -4,6 +4,6 @@ mysql:
   user: mahirolib
   password: mahirolib
   db: mahirolib
-lib-user:
+lib-proxy: 
   host: 127.0.0.1
-  port: 8080
+  port: 7622

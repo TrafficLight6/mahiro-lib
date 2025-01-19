@@ -4,15 +4,6 @@ mysql:
   user: mahirolib
   password: mahirolib
   db: mahirolib
-lib-user:
-  host: 127.0.0.1
-  port: 8080
-lib-config:
-  host: 127.0.0.1
-  port: 8081
-lib-storage:
-  host: 127.0.0.1
-  port: 8082
 lib-proxy: 
   host: 127.0.0.1
   port: 7622

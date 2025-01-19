@@ -15,8 +15,8 @@ import (
 )
 
 type Config struct {
-	Mysql   DatabaseConfig           `yaml:"mysql"`
-	LibUser LibUserApplicationConfig `yaml:"lib-user"`
+	Mysql    DatabaseConfig            `yaml:"mysql"`
+	LibProxy LibProxyApplicationConfig `yaml:"lib-user"`
 }
 
 type DatabaseConfig struct {
@@ -27,7 +27,7 @@ type DatabaseConfig struct {
 	Db       string `yaml:"db"`
 }
 
-type LibUserApplicationConfig struct {
+type LibProxyApplicationConfig struct {
 	Host string `yaml:"host"`
 	Port int    `yaml:"port"`
 }
@@ -101,7 +101,7 @@ func main() {
 			success = false
 		} else {
 			//Get the user information
-			url := "http://" + config.LibUser.Host + ":" + strconv.Itoa(config.LibUser.Port) + "/user/check/" + "?token=" + token
+			url := "http://" + config.LibProxy.Host + ":" + strconv.Itoa(config.LibProxy.Port) + "/user/check/" + "?token=" + token
 			respone := httpGetRequest(url)
 
 			//Json unmarshal
@@ -179,7 +179,7 @@ func main() {
 			success = false
 		} else {
 			//Get the user information
-			url := "http://" + config.LibUser.Host + ":" + strconv.Itoa(config.LibUser.Port) + "/user/check/" + "?token=" + token
+			url := "http://" + config.LibProxy.Host + ":" + strconv.Itoa(config.LibProxy.Port) + "/user/check/" + "?token=" + token
 			respone := httpGetRequest(url)
 
 			//Json unmarshal

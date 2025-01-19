@@ -18,11 +18,8 @@ import (
 )
 
 type Config struct {
-	Mysql      DatabaseConfig              `yaml:"mysql"`
-	LibUser    LibUserApplicationConfig    `yaml:"lib-user"`
-	LibStorage LibStorageApplicationConfig `yaml:"lib-config"`
-	LibConfiig LibConfigApplicationConfig  `yaml:"lib-storage"`
-	LibProxy   LibProxyApplicationConfig   `yaml:"lib-proxy"`
+	Mysql    DatabaseConfig            `yaml:"mysql"`
+	LibProxy LibProxyApplicationConfig `yaml:"lib-proxy"`
 }
 
 type DatabaseConfig struct {
@@ -31,20 +28,6 @@ type DatabaseConfig struct {
 	Username string `yaml:"user"`
 	Password string `yaml:"password"`
 	Db       string `yaml:"db"`
-}
-
-type LibUserApplicationConfig struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
-}
-
-type LibConfigApplicationConfig struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
-}
-type LibStorageApplicationConfig struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
 }
 
 type LibProxyApplicationConfig struct {
@@ -207,7 +190,7 @@ func main() {
 		} else {
 			//Get the user information
 			config = readConfig()
-			url := "http://" + config.LibUser.Host + ":" + strconv.Itoa(config.LibUser.Port) + "/user/check/" + "?token=" + token
+			url := "http://" + config.LibProxy.Host + ":" + strconv.Itoa(config.LibProxy.Port) + "/user/check/" + "?token=" + token
 			respone := httpGetRequest(url)
 			//Json unmarshal
 			var responeInfomation UserCheckJson

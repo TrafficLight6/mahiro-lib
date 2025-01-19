@@ -20,7 +20,7 @@ import (
 
 type Config struct {
 	Mysql      DatabaseConfig              `yaml:"mysql"`
-	LibUser    LibUserApplicationConfig    `yaml:"lib-user"`
+	LibProxy   LibProxyApplicationConfig   `yaml:"lib-user"`
 	LibStorage LibStorageApplicationConfig `yaml:"lib-storage"`
 }
 
@@ -32,7 +32,7 @@ type DatabaseConfig struct {
 	Db       string `yaml:"db"`
 }
 
-type LibUserApplicationConfig struct {
+type LibProxyApplicationConfig struct {
 	Host string `yaml:"host"`
 	Port int    `yaml:"port"`
 }
@@ -74,7 +74,7 @@ func main() {
 			fileList = nil
 		} else {
 			//Get user information
-			url := "http://" + config.LibUser.Host + ":" + strconv.Itoa(config.LibUser.Port) + "/user/check/" + "?token=" + token
+			url := "http://" + config.LibProxy.Host + ":" + strconv.Itoa(config.LibProxy.Port) + "/user/check/" + "?token=" + token
 			respone := httpGetRequest(url)
 
 			//Json unmarshal
@@ -148,7 +148,7 @@ func main() {
 			resultMessage = "fail in getting cookie"
 			fileList = nil
 		} else {
-			url := "http://" + config.LibUser.Host + ":" + strconv.Itoa(config.LibUser.Port) + "/user/check/" + "?token=" + token
+			url := "http://" + config.LibProxy.Host + ":" + strconv.Itoa(config.LibProxy.Port) + "/user/check/" + "?token=" + token
 			respone := httpGetRequest(url)
 
 			//Json unmarshal
@@ -218,7 +218,7 @@ func main() {
 			resultMessage = "fail in getting cookie"
 			fileList = nil
 		} else {
-			url := "http://" + config.LibUser.Host + ":" + strconv.Itoa(config.LibUser.Port) + "/user/check/" + "?token=" + token
+			url := "http://" + config.LibProxy.Host + ":" + strconv.Itoa(config.LibProxy.Port) + "/user/check/" + "?token=" + token
 			respone := httpGetRequest(url)
 
 			//Json unmarshal

@@ -15,8 +15,8 @@ import (
 )
 
 type Config struct {
-	Mysql     DatabaseConfig            `yaml:"mysql"`
-	LibConfig LibConfigApplcationConfig `yaml:"lib-config"`
+	Mysql    DatabaseConfig           `yaml:"mysql"`
+	LibProxy LibProxyApplcationConfig `yaml:"lib-config"`
 }
 
 type DatabaseConfig struct {
@@ -27,7 +27,7 @@ type DatabaseConfig struct {
 	Db       string `yaml:"db"`
 }
 
-type LibConfigApplcationConfig struct {
+type LibProxyApplcationConfig struct {
 	Host string `yaml:"host"`
 	Port int    `yaml:"port"`
 }
