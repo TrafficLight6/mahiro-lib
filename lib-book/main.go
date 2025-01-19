@@ -53,11 +53,12 @@ type UserCheckJson struct {
 }
 
 type BookList struct {
-	Id       int    `json:"id" db:"id"`
-	BookName string `json:"book_name" db:"book_name"`
-	Type     string `json:"book_type" db:"type"`
-	Vision   string `json:"book_vision" db:"vision"`
-	BookHash string `json:"book_hash" db:"hash"`
+	Id        int    `json:"id" db:"id"`
+	BookName  string `json:"book_name" db:"book_name"`
+	BookCover string `json:"book_cover" db:"book_cover"`
+	Type      string `json:"book_type" db:"type"`
+	Vision    string `json:"book_vision" db:"vision"`
+	BookHash  string `json:"book_hash" db:"hash"`
 }
 
 func main() {
@@ -95,6 +96,7 @@ func main() {
 				if responeInfomation.Success {
 					bookName := c.Query("book_name")
 					bookType := c.Query("book_type")
+					bookCover := c.Query("book_cover")
 					var bookVision string
 					if responeInfomation.AdminRight == "true" {
 						bookVision = "true"
@@ -102,9 +104,9 @@ func main() {
 						bookVision = "false"
 					}
 					db := connectMysql()
-					sqlString := "INSERT INTO gbl_book(id,book_name,type,vision,hash) VALUES(DEFAULT,?,?,?,?)"
+					sqlString := "INSERT INTO gbl_book(id,book_name,book_cover,type,vision,hash) VALUES(DEFAULT,?,?,?,?,?)"
 					bookHash = hashSha256(bookName + bookType + strconv.Itoa(int(time.Now().Unix())))
-					_, err := db.Exec(sqlString, bookName, bookType, bookVision, bookHash)
+					_, err := db.Exec(sqlString, bookName, bookCover, bookType, bookVision, bookHash)
 					defer db.Close()
 					if err != nil {
 						resultMessage = "fail in inserting book information"
@@ -152,21 +154,28 @@ func main() {
 					bookName := c.Query("book_name")
 					bookType := c.Query("book_type")
 					bookVision := c.Query("book_vision")
-					if responeInfomation.AdminRight == "true" {
-						db := connectMysql()
-						sqlString := "UPDATE gbl_book SET book_name=?,type=?,vision=?"
-						_, err := db.Exec(sqlString, bookName, bookType, bookVision)
-						defer db.Close()
-						if err != nil {
-							resultMessage = "fail in editing book information"
-							success = false
-						} else {
-							resultMessage = "success.and now the name,type and vision of the book are `" + bookName + "`, `" + bookType + "` and `" + bookVision + "`"
-							success = true
-						}
-					} else {
-						resultMessage = "not administrator.beacuse of no right"
+					bookCover := c.Query("book_cover")
+					bookHash := c.Query("book_hash")
+					if bookHash == "" {
+						resultMessage = "no book hash"
 						success = false
+					} else {
+						if responeInfomation.AdminRight == "true" {
+							db := connectMysql()
+							sqlString := "UPDATE gbl_book SET book_name=?,book_cover=?,type=?,vision=? WHERE hash=?"
+							_, err := db.Exec(sqlString, bookName, bookCover, bookType, bookVision, bookHash)
+							defer db.Close()
+							if err != nil {
+								resultMessage = "fail in editing book information"
+								success = false
+							} else {
+								resultMessage = "success.and now the name,type and vision of the book are `" + bookName + "`,`" + bookCover + "`, `" + bookType + "` and `" + bookVision + "`"
+								success = true
+							}
+						} else {
+							resultMessage = "not administrator.beacuse of no right"
+							success = false
+						}
 					}
 				} else {
 					//If user applaction fail to get user information
@@ -242,7 +251,7 @@ func main() {
 		keyWord := c.Query("key")
 		if keyWord == "" {
 			db := connectMysql()
-			sqlString := "SELECT id,book_name,type,vision,hash FROM gbl_book"
+			sqlString := "SELECT id,book_name,book_cover,type,vision,hash FROM gbl_book"
 			err := db.Select(&books, sqlString)
 			defer db.Close()
 			if err != nil {
@@ -255,7 +264,7 @@ func main() {
 			}
 		} else {
 			db := connectMysql()
-			sqlString := "SELECT id,book_name,type,vision,hash FROM gbl_book WHERE book_name LIKE ?"
+			sqlString := "SELECT id,book_name,book_cover,type,vision,hash FROM gbl_book WHERE book_name LIKE ?"
 			err := db.Select(&books, sqlString, "%"+keyWord+"%")
 			defer db.Close()
 			if err != nil {
@@ -292,7 +301,7 @@ func main() {
 			success = false
 			bookHash = ""
 		} else {
-			db.Select(&books, "SELECT id,book_name,type,vision,hash FROM gbl_book WHERE id = ?", bookId)
+			db.Select(&books, "SELECT id,book_name,book_cover,type,vision,hash FROM gbl_book WHERE id = ?", bookId)
 			if books == nil {
 				resultMessage = "can not selecting a book which id is `" + strconv.Itoa(bookId) + "`"
 				success = false

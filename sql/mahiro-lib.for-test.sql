@@ -1,5 +1,5 @@
 ﻿# Host: 127.0.0.1  (Version: 5.7.26)
-# Date: 2025-01-18 21:21:08
+# Date: 2025-01-19 18:57:14
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS `gbl_book`;
 CREATE TABLE `gbl_book` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `book_name` varchar(255) NOT NULL DEFAULT '',
+  `book_cover` varchar(255) NOT NULL DEFAULT '',
   `type` varchar(255) NOT NULL DEFAULT '',
   `vision` varchar(255) NOT NULL DEFAULT 'true',
   `hash` varchar(255) NOT NULL DEFAULT '',
@@ -23,7 +24,7 @@ CREATE TABLE `gbl_book` (
 #
 
 /*!40000 ALTER TABLE `gbl_book` DISABLE KEYS */;
-INSERT INTO `gbl_book` VALUES (1,'资本论','text','true','54f01d0b9a4dcdeabe98b54877eed5173d033398926412ccf787a58786c1b221'),(2,'共产党宣言','text','true','ac0644da80b6102085b0e6a39a235e73bb54e99b93cb6997e04131a5f2b6c19e'),(3,'家庭、私有制和国家的起源','text','true','e36eb7acf1cb58fdde3e600c566c8975ecc6cb302d34cbc22834b9b66e922b40'),(4,'资本','text','true','2e5149644da1f5b55bf025fa39f6bf0c339e96a08b53344355b793ca00e0e682');
+INSERT INTO `gbl_book` VALUES (1,'资本论','','text','true','54f01d0b9a4dcdeabe98b54877eed5173d033398926412ccf787a58786c1b221'),(2,'共产党宣言','','text','true','ac0644da80b6102085b0e6a39a235e73bb54e99b93cb6997e04131a5f2b6c19e'),(3,'家庭、私有制和国家的起源','','text','true','e36eb7acf1cb58fdde3e600c566c8975ecc6cb302d34cbc22834b9b66e922b40'),(4,'资本','','text','true','2e5149644da1f5b55bf025fa39f6bf0c339e96a08b53344355b793ca00e0e682');
 /*!40000 ALTER TABLE `gbl_book` ENABLE KEYS */;
 
 #

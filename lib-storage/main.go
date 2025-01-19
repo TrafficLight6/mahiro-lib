@@ -52,7 +52,7 @@ func main() {
 	r.MaxMultipartMemory = int64(readConfig().LibStorage.MaxFileSize)
 	r.Static("/storage/get/text", "./storage/text")
 	r.Static("/storage/get/picture", "./storage/picture")
-
+	r.Static("/storage/get/cover", "./storage/cover")
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "go book libary api.storage module here",
@@ -205,9 +205,86 @@ func main() {
 		})
 	})
 
+	//Cover here.
+	r.POST("/storage/update/cover", func(c *gin.Context) {
+		var success bool
+		var resultMessage string
+		var fileList []string
+
+		token, err := c.Cookie("token")
+		config := readConfig()
+		if err != nil {
+			success = false
+			resultMessage = "fail in getting cookie"
+			fileList = nil
+		} else {
+			url := "http://" + config.LibUser.Host + ":" + strconv.Itoa(config.LibUser.Port) + "/user/check/" + "?token=" + token
+			respone := httpGetRequest(url)
+
+			//Json unmarshal
+			var responeInfomation UserCheckJson
+			err := json.Unmarshal([]byte(respone), &responeInfomation)
+			//If unmarshal fail
+			if err != nil {
+				resultMessage = "fail in json unmarshal"
+				success = false
+				fileList = nil
+			} else {
+				if responeInfomation.Success {
+					db := connectMysql()
+					sqlString := "INSERT INTO gbl_storage (id,`type`,`name`) VALUES(DEFAULT,?,?)"
+					form, _ := c.MultipartForm()
+					files := form.File["file"]
+					if files == nil {
+						resultMessage = "file form is null"
+						success = false
+						fileList = nil
+					} else {
+						for _, file := range files {
+							fileContext, _ := file.Open()
+							defer fileContext.Close()
+							hash := sha256.New()
+							io.Copy(hash, fileContext)
+							fileHash := hex.EncodeToString(hash.Sum(nil))
+							fileExtension := filepath.Ext(file.Filename)
+
+							name := fileHash + strconv.Itoa(int(time.Now().Unix())) + fileExtension
+							dst := "./storage/cover/" + name
+							c.SaveUploadedFile(file, dst)
+							fileList = append(fileList, name)
+							_, err = db.Exec(sqlString, "cover", name)
+						}
+						defer db.Close()
+						resultMessage = "success"
+						success = true
+
+					}
+
+				} else {
+					//If user applaction fail to get user information
+					resultMessage = "fail in user application get user information"
+					success = false
+				}
+			}
+		}
+
+		c.JSON(200, gin.H{
+			"message":   resultMessage,
+			"success":   success,
+			"file_list": fileList,
+		})
+	})
+
 	r.GET("/storage/get/picture", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "picture root diratory here",
+			"success": true,
+		})
+	})
+
+	r.GET("/storage/get/cover", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "cover root diratory here",
 			"success": true,
 		})
 	})
