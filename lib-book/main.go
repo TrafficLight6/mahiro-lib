@@ -50,6 +50,22 @@ type BookList struct {
 	BookHash  string `json:"book_hash" db:"hash"`
 }
 
+type ChapterList struct {
+	Id              int    `json:"id" db:"id"`
+	BookId          int    `json:"book_id" db:"book_id"`
+	ChapterName     string `json:"chapter_name" db:"name"`
+	ChapterHash     string `json:"chapter_hash" db:"hash"`
+	ChapterFileList string `json:"chapter_file_list" db:"file_list"`
+}
+
+type ResultChapterList struct {
+	Id              int      `json:"id" db:"id"`
+	BookId          int      `json:"book_id" db:"book_id"`
+	ChapterName     string   `json:"chapter_name" db:"name"`
+	ChapterHash     string   `json:"chapter_hash" db:"hash"`
+	ChapterFileList []string `json:"chapter_file_list" db:"file_list"`
+}
+
 func main() {
 	r := gin.Default()
 
@@ -235,7 +251,6 @@ func main() {
 		var books []BookList
 		var resultMessage string
 		var success bool
-		// var jsonResult []byte
 
 		keyWord := c.Query("key")
 		if keyWord == "" {
@@ -305,6 +320,46 @@ func main() {
 			"message": resultMessage,
 			"success": success,
 			"hash":    bookHash,
+		})
+	})
+
+	r.GET("/book/chapter/get/", func(c *gin.Context) {
+		db := connectMysql()
+		chapterHash := c.Query("chapter_hash")
+		var chapterList []ChapterList
+		var chapterFileList []string
+		var success bool
+		var resultMessage string
+		var reasult ResultChapterList
+
+		db.Select(&chapterList, "SELECT id,book_id,name,hash,file_list FROM gbl_chapter WHERE hash = ?", chapterHash)
+		if chapterList == nil {
+			success = false
+			resultMessage = "Can not selecting a chapter which hash is `" + chapterHash + "`"
+			reasult = ResultChapterList{}
+		} else {
+			jsonData := chapterList[0].ChapterFileList
+			err := json.Unmarshal([]byte(jsonData), &chapterFileList)
+			if err != nil {
+				success = false
+				resultMessage = "Fail in json unmarshal"
+				reasult = ResultChapterList{}
+			} else {
+				success = true
+				resultMessage = "success"
+				reasult = ResultChapterList{
+					Id:              chapterList[0].Id,
+					BookId:          chapterList[0].BookId,
+					ChapterName:     chapterList[0].ChapterName,
+					ChapterHash:     chapterList[0].ChapterHash,
+					ChapterFileList: chapterFileList,
+				}
+			}
+		}
+		c.JSON(200, gin.H{
+			"message": resultMessage,
+			"success": success,
+			"chapter": reasult,
 		})
 	})
 

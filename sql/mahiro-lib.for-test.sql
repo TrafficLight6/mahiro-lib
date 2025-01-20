@@ -1,5 +1,5 @@
 ﻿# Host: 127.0.0.1  (Version: 5.7.26)
-# Date: 2025-01-19 18:57:14
+# Date: 2025-01-20 19:40:31
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -34,7 +34,8 @@ INSERT INTO `gbl_book` VALUES (1,'资本论','','text','true','54f01d0b9a4dcdeab
 DROP TABLE IF EXISTS `gbl_chapter`;
 CREATE TABLE `gbl_chapter` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `book_id` varchar(255) DEFAULT NULL,
+  `book_id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL DEFAULT '',
   `hash` varchar(255) NOT NULL DEFAULT '',
   `file_list` longtext NOT NULL,
   PRIMARY KEY (`Id`)
