@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http/httputil"
 	"net/url"
 	"os"
@@ -34,9 +33,9 @@ func main() {
 			c.Request.URL.Scheme = targetURL.Scheme
 			c.Request.URL.Path = strings.Replace(c.Request.URL.Path, targetURL.Path, "", 1)
 
-			fmt.Println(c.Request.Host)
-			fmt.Println(targetURL.Path)
-			fmt.Println(c.Request.URL.Host)
+			// fmt.Println(c.Request.Host)
+			// fmt.Println(targetURL.Path)
+			// fmt.Println(c.Request.URL.Host)
 			proxy.ServeHTTP(c.Writer, c.Request)
 		})
 	}
