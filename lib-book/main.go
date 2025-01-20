@@ -363,6 +363,36 @@ func main() {
 		})
 	})
 
+	r.GET("/book/chapter/gethash/", func(c *gin.Context) {
+		db := connectMysql()
+		var chapterList []ChapterList
+		var resultMessage string
+		var success bool
+		var chapterHash string
+		chapterId := c.Query("id")
+		if chapterId == "" {
+			resultMessage = "Argument cannot be empty"
+			success = false
+			chapterHash = ""
+		} else {
+			db.Select(&chapterList, "SELECT id,book_id,name,hash,file_list FROM gbl_chapter WHERE id = ?", chapterId)
+			if chapterList == nil {
+				resultMessage = "Can not selecting a chapter which id is `" + chapterId + "`"
+				success = false
+				chapterHash = ""
+			} else {
+				resultMessage = "success"
+				success = true
+				chapterHash = chapterList[0].ChapterHash
+			}
+		}
+		c.JSON(200, gin.H{
+			"message": resultMessage,
+			"success": success,
+			"hash":    chapterHash,
+		})
+	})
+
 	r.Run(":8083")
 }
 
