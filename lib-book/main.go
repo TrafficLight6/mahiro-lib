@@ -356,6 +356,67 @@ func main() {
 	})
 
 	//----------------------------chapter api----------------------------------
+	r.GET("/book/chapter/getlist/", func(c *gin.Context) {
+		db := connectMysql()
+		var resultMessage string
+		var success bool
+		// var chapterFileList []string
+		var result []ResultChapterList
+		var chapters []ChapterList
+		var books []BookList
+
+		bookHash := c.Query("book_hash")
+		if bookHash == "" {
+			resultMessage = "Book hash is empty"
+			success = false
+			result = nil
+		} else {
+			sqlString := "SELECT id,book_name,book_cover,type,vision,hash FROM gbl_book WHERE hash = ?"
+			err := db.Select(&books, sqlString, bookHash)
+			if err != nil {
+				resultMessage = "Fail in selecting"
+				success = false
+				result = nil
+			} else {
+				if books == nil {
+					resultMessage = "Can not fine book which hash is `" + bookHash + "`"
+					success = false
+					result = nil
+				} else {
+					sqlString := "SELECT id,book_id,name,hash,file_list FROM gbl_chapter WHERE book_id = ?"
+					err := db.Select(&chapters, sqlString, books[0].Id)
+					if err != nil {
+						resultMessage = "Fail in selecting"
+						success = false
+						result = nil
+					} else {
+						success = true
+						resultMessage = "Success"
+						for _, chapter := range chapters {
+
+							var jsonResult []string
+							jsonData := chapter.ChapterFileList
+							_ = json.Unmarshal([]byte(jsonData), &jsonResult)
+							result = append(result, ResultChapterList{
+								Id:              chapter.Id,
+								BookId:          chapter.BookId,
+								ChapterName:     chapter.ChapterName,
+								ChapterFileList: jsonResult,
+								ChapterHash:     chapter.ChapterHash,
+							})
+						}
+					}
+				}
+
+			}
+		}
+		c.JSON(200, gin.H{
+			"message": resultMessage,
+			"success": success,
+			"result":  result,
+		})
+	})
+
 	r.GET("/book/chapter/get/", func(c *gin.Context) {
 		db := connectMysql()
 		chapterHash := c.Query("chapter_hash")
