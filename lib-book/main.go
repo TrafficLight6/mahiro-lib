@@ -323,6 +323,39 @@ func main() {
 		})
 	})
 
+	r.GET("/book/get/", func(c *gin.Context) {
+		db := connectMysql()
+		bookHash := c.Query("book_hash")
+
+		var resultMessage string
+		var success bool
+		var result BookList
+
+		if bookHash == "" {
+			resultMessage = "Arugument cannot be empty"
+			success = false
+			result = BookList{}
+		} else {
+			var books []BookList
+			db.Select(&books, "SELECT id,book_name,book_cover,type,vision,hash FROM gbl_book WHERE hash = ?", bookHash)
+			if books == nil {
+				resultMessage = "Can not selecting a book which hash is `" + bookHash + "`"
+				success = false
+				result = BookList{}
+			} else {
+				resultMessage = "success"
+				success = true
+				result = books[0]
+			}
+		}
+		c.JSON(200, gin.H{
+			"message": resultMessage,
+			"success": success,
+			"book":    result,
+		})
+	})
+
+	//----------------------------chapter api----------------------------------
 	r.GET("/book/chapter/get/", func(c *gin.Context) {
 		db := connectMysql()
 		chapterHash := c.Query("chapter_hash")
@@ -390,6 +423,68 @@ func main() {
 			"message": resultMessage,
 			"success": success,
 			"hash":    chapterHash,
+		})
+	})
+
+	r.POST("/book/chapter/add/", func(c *gin.Context) {
+		var resultMessage string
+		var success bool
+		var config Config
+
+		db := connectMysql()
+		chapterHash := "none"
+		token, err := c.Cookie("token")
+		file_list := c.Query("file_list")
+		bookHash := c.Query("book_hash")
+		ChapterName := c.Query("chapter_name")
+		if err != nil {
+			resultMessage = "Fail in get cookie"
+			success = false
+		} else {
+			config = readConfig()
+			url := "http://" + config.LibProxy.Host + ":" + strconv.Itoa(config.LibProxy.Port) + "/user/check/" + "?token=" + token
+			respone := httpGetRequest(url)
+			var responeInfomation UserCheckJson
+			err = json.Unmarshal([]byte(respone), &responeInfomation)
+			if err != nil {
+				resultMessage = "Fail in json unmarshal"
+				success = false
+			} else {
+				if responeInfomation.AdminRight == "false" {
+					resultMessage = "You are not Admin"
+					success = false
+				} else {
+					if file_list == "" || bookHash == "" || ChapterName == "" {
+						resultMessage = "Arguments are not enough and empty"
+						success = false
+					} else {
+						var books []BookList
+						db.Select(&books, "SELECT id,book_name,book_cover,type,vision,hash FROM gbl_book WHERE hash = ?", bookHash)
+						if books == nil {
+							resultMessage = "Can not adding a chapter in the book which hash is `" + bookHash + "`"
+							success = false
+						} else {
+							chapterHash = hashSha256(bookHash + file_list + strconv.Itoa(int(time.Now().Unix())))
+							sqlString := "INSERT INTO gbl_chapter(id,book_id,name,hash,file_list) VALUES(DEFAULT,?,?,?,?)"
+							_, err = db.Exec(sqlString, books[0].Id, ChapterName, chapterHash, file_list)
+							if err != nil {
+								resultMessage = "Fail in inserting"
+								success = false
+							} else {
+								resultMessage = "Success.The hash of new chapter is `" + chapterHash + "` in the book which hash is `" + bookHash + "`"
+								success = true
+							}
+						}
+					}
+
+				}
+			}
+
+		}
+		c.JSON(200, gin.H{
+			"message":      resultMessage,
+			"success":      success,
+			"chapter_hash": chapterHash,
 		})
 	})
 

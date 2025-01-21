@@ -1,5 +1,5 @@
 ﻿# Host: 127.0.0.1  (Version: 5.7.26)
-# Date: 2025-01-20 19:40:31
+# Date: 2025-01-21 15:00:01
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -39,13 +39,14 @@ CREATE TABLE `gbl_chapter` (
   `hash` varchar(255) NOT NULL DEFAULT '',
   `file_list` longtext NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 #
 # Data for table "gbl_chapter"
 #
 
 /*!40000 ALTER TABLE `gbl_chapter` DISABLE KEYS */;
+INSERT INTO `gbl_chapter` VALUES (1,1,'goods','hash','[\"test.txt\",\"test2.txt\",\"test3.txt\"]'),(2,1,'test name','7668561d88757964153fd2300c93d73ee6bce0342513f6df685df9addfeb7322','[\"1\",\"2\",\"3\",\"4\"]');
 /*!40000 ALTER TABLE `gbl_chapter` ENABLE KEYS */;
 
 #
