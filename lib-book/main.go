@@ -603,6 +603,58 @@ func main() {
 		})
 	})
 
+	r.POST("/book/chapter/del/", func(c *gin.Context) {
+		var resultMessage string
+		var success bool
+		var config Config
+
+		db := connectMysql()
+		// chapterHash := "none"
+		token, err := c.Cookie("token")
+		chapterHash := c.Query("chapter_hash")
+		if err != nil {
+			resultMessage = "Fail in get cookie"
+			success = false
+		} else {
+			config = readConfig()
+			url := "http://" + config.LibProxy.Host + ":" + strconv.Itoa(config.LibProxy.Port) + "/user/check/" + "?token=" + token
+			respone := httpGetRequest(url)
+			var responeInfomation UserCheckJson
+			err = json.Unmarshal([]byte(respone), &responeInfomation)
+			if err != nil {
+				resultMessage = "Fail in json unmarshal"
+				success = false
+			} else {
+				if responeInfomation.AdminRight == "false" {
+					resultMessage = "You are not Admin"
+					success = false
+				} else {
+					if chapterHash == "" {
+						resultMessage = "Arguments are not enough and empty"
+						success = false
+					} else {
+						sqlString := "DELETE FROM gbl_chapter WHERE hash = ?"
+						_, err = db.Exec(sqlString, chapterHash)
+						if err != nil {
+							resultMessage = "Fail in inserting"
+							success = false
+						} else {
+							resultMessage = "Success"
+							success = true
+						}
+
+					}
+
+				}
+			}
+
+		}
+		c.JSON(200, gin.H{
+			"message": resultMessage,
+			"success": success,
+		})
+	})
+
 	r.Run(":8083")
 }
 
