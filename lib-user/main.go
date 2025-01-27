@@ -59,7 +59,7 @@ func main() {
 	//To get the cookie.
 	//Cookie will save in cilent.If you have "remember" argument.
 	//So if your request do not have that argument,please save it in JS of cilent.
-	r.GET("/user/login/", func(c *gin.Context) {
+	r.POST("/user/login/", func(c *gin.Context) {
 		//new sql connect
 		db := connectMysql()
 
@@ -78,16 +78,20 @@ func main() {
 		if err != nil {
 			success = false
 			resultMessage = "fail in selecting user information"
+			cookie = ""
+			cookieLife = -1
 		}
 		if users == nil {
 			success = false
 			resultMessage = "do not have a user call `" + username + "` in the database"
+			cookie = ""
+			cookieLife = -1
 		} else {
 			success = true
 		}
 
-		cookie = hashSha256(username + password + strconv.Itoa(int(time.Now().Unix())))
 		if success == true {
+			cookie = hashSha256(username + password + strconv.Itoa(int(time.Now().Unix())))
 			if remember == "true" {
 				cookieLife = 3156000
 			} else {
