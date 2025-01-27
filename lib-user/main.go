@@ -106,11 +106,11 @@ func main() {
 			} else {
 				resultMessage = "success"
 				success = true
-				if remember == "true" {
-					c.SetCookie("token", cookie, cookieLife, "/", "", false, true)
-				} else {
-					c.SetCookie("token", cookie, -1, "/", "", false, true)
-				}
+				// if remember == "true" {
+				// 	c.SetCookie("token", cookie, cookieLife, "/", "", false, true)
+				// } else {
+				// 	c.SetCookie("token", cookie, -1, "/", "", false, true)
+				// }
 			}
 		}
 		defer db.Close()
