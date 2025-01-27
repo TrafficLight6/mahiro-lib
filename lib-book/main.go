@@ -495,7 +495,7 @@ func main() {
 		db := connectMysql()
 		chapterHash := "none"
 		token, err := c.Cookie("token")
-		file_list := c.Query("file_list")
+		fileList := c.Query("file_list")
 		bookHash := c.Query("book_hash")
 		ChapterName := c.Query("chapter_name")
 		if err != nil {
@@ -515,7 +515,7 @@ func main() {
 					resultMessage = "You are not Admin"
 					success = false
 				} else {
-					if file_list == "" || bookHash == "" || ChapterName == "" {
+					if fileList == "" || bookHash == "" || ChapterName == "" {
 						resultMessage = "Arguments are not enough and empty"
 						success = false
 					} else {
@@ -525,9 +525,9 @@ func main() {
 							resultMessage = "Can not adding a chapter in the book which hash is `" + bookHash + "`"
 							success = false
 						} else {
-							chapterHash = hashSha256(bookHash + file_list + strconv.Itoa(int(time.Now().Unix())))
+							chapterHash = hashSha256(bookHash + fileList + strconv.Itoa(int(time.Now().Unix())))
 							sqlString := "INSERT INTO gbl_chapter(id,book_id,name,hash,file_list) VALUES(DEFAULT,?,?,?,?)"
-							_, err = db.Exec(sqlString, books[0].Id, ChapterName, chapterHash, file_list)
+							_, err = db.Exec(sqlString, books[0].Id, ChapterName, chapterHash, fileList)
 							if err != nil {
 								resultMessage = "Fail in inserting"
 								success = false
@@ -546,6 +546,60 @@ func main() {
 			"message":      resultMessage,
 			"success":      success,
 			"chapter_hash": chapterHash,
+		})
+	})
+
+	r.POST("/book/chapter/edit/", func(c *gin.Context) {
+		var resultMessage string
+		var success bool
+		var config Config
+
+		db := connectMysql()
+		// chapterHash := "none"
+		token, err := c.Cookie("token")
+		fileList := c.Query("file_list")
+		chapterName := c.Query("chapter_name")
+		chapterHash := c.Query("chapter_hash")
+		if err != nil {
+			resultMessage = "Fail in get cookie"
+			success = false
+		} else {
+			config = readConfig()
+			url := "http://" + config.LibProxy.Host + ":" + strconv.Itoa(config.LibProxy.Port) + "/user/check/" + "?token=" + token
+			respone := httpGetRequest(url)
+			var responeInfomation UserCheckJson
+			err = json.Unmarshal([]byte(respone), &responeInfomation)
+			if err != nil {
+				resultMessage = "Fail in json unmarshal"
+				success = false
+			} else {
+				if responeInfomation.AdminRight == "false" {
+					resultMessage = "You are not Admin"
+					success = false
+				} else {
+					if fileList == "" || chapterHash == "" || chapterName == "" {
+						resultMessage = "Arguments are not enough and empty"
+						success = false
+					} else {
+						sqlString := "UPDATE gbl_chapter SET name = ?,file_list = ? WHERE hash = ?"
+						_, err = db.Exec(sqlString, chapterName, fileList, chapterHash)
+						if err != nil {
+							resultMessage = "Fail in inserting"
+							success = false
+						} else {
+							resultMessage = "Success.Now chapter name and file list of the chapter `" + chapterHash + "`" + "is`" + chapterName + "`" + "and`" + fileList + "`."
+							success = true
+						}
+
+					}
+
+				}
+			}
+
+		}
+		c.JSON(200, gin.H{
+			"message": resultMessage,
+			"success": success,
 		})
 	})
 
