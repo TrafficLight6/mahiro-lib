@@ -7,6 +7,6 @@ export default defineNuxtConfig({
     // '@element-plus/icons-vue'
   ],
   runtimeConfig :{
-    api_proxy : 'http://127.0.0.1:7622/'
+    api_proxy : 'http://127.0.0.1:7622'
   }
 })
