@@ -16,7 +16,7 @@
             </el-header>
             <el-main>
                 <div v-if="books.length > 0" class="book-item">
-                    <BookItem v-for="book in books" :bookTitle="book.book_name" :bookCover="book.book_cover" />
+                    <BookItem v-for="book in books" :bookTitle="book.book_name" :bookCover="book.book_cover" :bookHerf="'./'"/>
                 </div>
                 <div v-else>Loading</div>
             </el-main>
