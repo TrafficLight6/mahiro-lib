@@ -1,5 +1,5 @@
 ﻿# Host: 127.0.0.1  (Version: 5.7.26)
-# Date: 2025-01-21 15:00:01
+# Date: 2025-02-03 19:14:44
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -24,7 +24,7 @@ CREATE TABLE `gbl_book` (
 #
 
 /*!40000 ALTER TABLE `gbl_book` DISABLE KEYS */;
-INSERT INTO `gbl_book` VALUES (1,'资本论','','text','true','54f01d0b9a4dcdeabe98b54877eed5173d033398926412ccf787a58786c1b221'),(2,'共产党宣言','','text','true','ac0644da80b6102085b0e6a39a235e73bb54e99b93cb6997e04131a5f2b6c19e'),(3,'家庭、私有制和国家的起源','','text','true','e36eb7acf1cb58fdde3e600c566c8975ecc6cb302d34cbc22834b9b66e922b40'),(4,'资本','','text','true','2e5149644da1f5b55bf025fa39f6bf0c339e96a08b53344355b793ca00e0e682');
+INSERT INTO `gbl_book` VALUES (1,'资本论','{proxy}/storage/cover/no_cover.png','text','true','54f01d0b9a4dcdeabe98b54877eed5173d033398926412ccf787a58786c1b221'),(2,'共产党宣言','{proxy}/storage/cover/no_cover.png','text','true','ac0644da80b6102085b0e6a39a235e73bb54e99b93cb6997e04131a5f2b6c19e'),(3,'家庭、私有制和国家的起源','{proxy}/storage/cover/no_cover.png','text','true','e36eb7acf1cb58fdde3e600c566c8975ecc6cb302d34cbc22834b9b66e922b40'),(4,'资本','{proxy}/storage/cover/no_cover.png','text','true','2e5149644da1f5b55bf025fa39f6bf0c339e96a08b53344355b793ca00e0e682');
 /*!40000 ALTER TABLE `gbl_book` ENABLE KEYS */;
 
 #
@@ -39,7 +39,7 @@ CREATE TABLE `gbl_chapter` (
   `hash` varchar(255) NOT NULL DEFAULT '',
   `file_list` longtext NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 #
 # Data for table "gbl_chapter"
@@ -99,14 +99,14 @@ CREATE TABLE `gbl_token` (
   `token` varchar(255) NOT NULL DEFAULT '',
   `dietime` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 #
 # Data for table "gbl_token"
 #
 
 /*!40000 ALTER TABLE `gbl_token` DISABLE KEYS */;
-INSERT INTO `gbl_token` VALUES (1,1,'3a11e70b44ef8eac411de1523811a93be255b1bb7eedc036f61925c750ade47b',1730993191);
+INSERT INTO `gbl_token` VALUES (1,1,'3a11e70b44ef8eac411de1523811a93be255b1bb7eedc036f61925c750ade47b',1730993191),(2,1,'67fe08615fcb9656fef5d637d5fdbc1035bb1380f6654b6d2da756e1c2916bd1',1741721232),(3,1,'9ce1c137c9169b758c82c5698f92a490c67fe11685ac6432ef2e7ea96ffb06c1',1741721396);
 /*!40000 ALTER TABLE `gbl_token` ENABLE KEYS */;
 
 #

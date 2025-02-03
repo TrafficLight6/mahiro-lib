@@ -10,12 +10,13 @@
                     <el-menu-item>
                         <el-input :prefix-icon="Search" clearable v-model="searchKeyWord"/>
                         &ensp;&ensp;
-                        <el-link type="primary" :href="'/search?key_word='+searchKeyWord" @click="searchCheck">Search</el-link>
+                        <el-button @click="search">Search</el-button>
                     </el-menu-item>
                 </el-menu>
             </el-header>
+            <el-main>
 
-            <el-main></el-main>
+            </el-main>
 
             <el-footer>Footer</el-footer>
         </el-container>
@@ -24,13 +25,27 @@
 
 <script setup>
 import { Search } from '@element-plus/icons-vue'
-
-const activeIndex = ref('1')
 let searchKeyWord = ref('')
+let activeIndex = ref('0')
+
+const router = useRouter()
+
+const search = () => {
+    if (searchKeyWord.value=='') {
+        ElNotification({
+            title: 'Error',
+            message: 'Please type your search key word!',
+            type: 'error',
+        })
+    }else{
+        router.push({
+            path: '/search',
+            query: {
+                keyword: searchKeyWord.value
+            }
+        })
+    }
+}
 </script>
 
-<style>
-el-header {
-    background-color: rgb(102.2, 177.4, 255);
-}
-</style>
+<style></style>

@@ -8,7 +8,6 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -49,12 +48,6 @@ func main() {
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
-
-		corsConfig := cors.DefaultConfig()
-		corsConfig.AllowOrigins = []string{"*"}
-		corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
-		corsConfig.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
-		r.Use(cors.New(corsConfig))
 
 		c.JSON(200, gin.H{
 			"message": "go book libary api.config module here",
