@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     public: {
-      apiProxy: "http://localhost:7622"
+      apiProxy: "http://127.0.0.1:7622"
     }
   }
 })
