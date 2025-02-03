@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -55,6 +56,12 @@ func main() {
 		})
 	})
 
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"*"} // 根据实际情况修改允许的源
+	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	corsConfig.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
+	r.Use(cors.New(corsConfig))
+
 	//Log in.
 	//To get the cookie.
 	//Cookie will save in cilent.If you have "remember" argument.
@@ -95,7 +102,7 @@ func main() {
 			if remember == "true" {
 				cookieLife = 3156000
 			} else {
-				cookieLife = -1
+				cookieLife = 86400
 			}
 			sql := "INSERT INTO gbl_token(id,user_id,token,dietime) VALUES(DEFAULT,?,?,?)"
 

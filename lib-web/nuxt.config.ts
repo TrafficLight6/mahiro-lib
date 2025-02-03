@@ -4,5 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@element-plus/nuxt'
-  ]
+  ],
+  runtimeConfig: {
+    public: {
+      apiProxy: "http://localhost:7622"
+    }
+  }
 })
