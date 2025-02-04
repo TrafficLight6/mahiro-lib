@@ -3,7 +3,7 @@
         <div class="book-item">
 
             <div class="book-item-img">
-                <el-link :href="`/book/chapter_list/`+bookHash">
+                <el-link :href="`/home/book/`+bookHash">
                     <el-image fit="cover" style="height: 424px;width: 300px;":src="bookCover" />
                 </el-link>
             </div>
