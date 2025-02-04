@@ -25,6 +25,10 @@ let password = ref('')
 let remember = ref(false)
 let loading = ref(false)
 
+useHead({
+    title: 'Mahiro Lib - Login'
+})
+
 onMounted(() => {
     if (Cookies.get('token') != undefined) {
         useRouter().push('/home')

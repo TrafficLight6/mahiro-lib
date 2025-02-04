@@ -13,6 +13,9 @@ export default defineNuxtConfig({
   app:{
     head:{
       title:"Mahiro Lib",
+      meta:[
+        {charset:"utf-8"}
+      ]
     }
   },
 })
