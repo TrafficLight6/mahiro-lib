@@ -9,5 +9,10 @@ export default defineNuxtConfig({
     public: {
       apiProxy: "http://127.0.0.1:7622"
     }
-  }
+  },
+  app:{
+    head:{
+      title:"Mahiro Lib",
+    }
+  },
 })

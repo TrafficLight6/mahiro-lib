@@ -3,7 +3,7 @@
         <div class="book-item">
 
             <div class="book-item-img">
-                <el-link :href="bookHerf">
+                <el-link :href="`/book/`+bookHash">
                     <el-image fit="cover" style="height: 424px;width: 300px;":src="bookCover" />
                 </el-link>
             </div>
@@ -18,9 +18,9 @@
 <script setup>
 const config = useRuntimeConfig()
 
-const props = defineProps({ bookTitle: { type: String }, bookCover: { type: String }, bookHerf: { type: String } })
+const props = defineProps({ bookTitle: { type: String }, bookCover: { type: String }, bookHash: { type: String } })
 const bookTitle = props.bookTitle
-const bookHerf = props.bookHerf
+const bookHerf = props.bookHash
 let bookCover = props.bookCover.replaceAll('{proxy}', config.public.apiProxy)
 </script>
 
