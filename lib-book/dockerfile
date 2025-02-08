@@ -1,0 +1,13 @@
+FROM golang:1.24rc3-bullseye
+WORKDIR /mahiro-lib/book
+
+#COPY config.yaml /mahiro-lib/book/config.yaml
+COPY . .
+
+RUN go env -w GO111MODULE=on
+RUN go env -w GOPROXY=https://goproxy.cn,direct
+RUN go get
+RUN go build -o book
+
+EXPOSE 8083
+CMD ["./book"]

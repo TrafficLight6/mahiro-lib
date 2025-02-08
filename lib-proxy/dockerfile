@@ -1,0 +1,13 @@
+FROM golang:1.24rc3-bullseye
+WORKDIR /mahiro-lib/proxy
+
+#COPY config.yaml /mahiro-lib/proxy/config.yaml
+COPY . .
+
+RUN go env -w GO111MODULE=on
+RUN go env -w GOPROXY=https://goproxy.cn,direct
+RUN go get
+RUN go build -o proxy
+
+EXPOSE 7622
+CMD ["./proxy"]
