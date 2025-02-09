@@ -309,7 +309,7 @@ func main() {
 func readConfig() Config {
 	// open yaml
 	var config Config
-	file, err := os.Open("config.yaml")
+	file, err := os.Open("config/config.yaml")
 	if err != nil {
 		return config
 	}
