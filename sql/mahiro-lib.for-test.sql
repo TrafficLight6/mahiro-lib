@@ -1,5 +1,5 @@
 ﻿# Host: 127.0.0.1  (Version: 5.7.26)
-# Date: 2025-02-09 21:57:53
+# Date: 2025-02-11 18:12:32
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -17,14 +17,14 @@ CREATE TABLE `gbl_book` (
   `vision` varchar(255) NOT NULL DEFAULT 'true',
   `hash` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 #
 # Data for table "gbl_book"
 #
 
 /*!40000 ALTER TABLE `gbl_book` DISABLE KEYS */;
-INSERT INTO `gbl_book` VALUES (1,'资本论','{proxy}/storage/get/cover/no_cover.png','text','true','54f01d0b9a4dcdeabe98b54877eed5173d033398926412ccf787a58786c1b221'),(2,'共产党宣言','{proxy}/storage/get/cover/no_cover.png','text','true','ac0644da80b6102085b0e6a39a235e73bb54e99b93cb6997e04131a5f2b6c19e'),(3,'家庭、私有制和国家的起源','{proxy}/storage/get/cover/no_cover.png','text','true','e36eb7acf1cb58fdde3e600c566c8975ecc6cb302d34cbc22834b9b66e922b40'),(4,'资本','{proxy}/storage/get/cover/no_cover.png','text','true','2e5149644da1f5b55bf025fa39f6bf0c339e96a08b53344355b793ca00e0e682'),(5,'very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very long text for test','{proxy}/storage/get/cover/no_cover.png','text','true','very_long_hash'),(6,'很长很长很长很长很长很长很长很长很长很长很长的文本','{proxy}/storage/get/cover/no_cover.png','text','true','chang');
+INSERT INTO `gbl_book` VALUES (1,'资本论','{proxy}/storage/get/cover/no_cover.png','picture','true','54f01d0b9a4dcdeabe98b54877eed5173d033398926412ccf787a58786c1b221'),(2,'共产党宣言','{proxy}/storage/get/cover/no_cover.png','text','true','ac0644da80b6102085b0e6a39a235e73bb54e99b93cb6997e04131a5f2b6c19e'),(3,'家庭、私有制和国家的起源','{proxy}/storage/get/cover/no_cover.png','text','true','e36eb7acf1cb58fdde3e600c566c8975ecc6cb302d34cbc22834b9b66e922b40'),(4,'资本','{proxy}/storage/get/cover/no_cover.png','text','true','2e5149644da1f5b55bf025fa39f6bf0c339e96a08b53344355b793ca00e0e682'),(5,'very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very,very long text for test','{proxy}/storage/get/cover/no_cover.png','text','true','very_long_hash'),(6,'很长很长很长很长很长很长很长很长很长很长很长的文本','{proxy}/storage/get/cover/no_cover.png','text','true','chang');
 /*!40000 ALTER TABLE `gbl_book` ENABLE KEYS */;
 
 #
@@ -39,14 +39,14 @@ CREATE TABLE `gbl_chapter` (
   `hash` varchar(255) NOT NULL DEFAULT '',
   `file_list` longtext NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 #
 # Data for table "gbl_chapter"
 #
 
 /*!40000 ALTER TABLE `gbl_chapter` DISABLE KEYS */;
-INSERT INTO `gbl_chapter` VALUES (1,1,'goods','hash','[\"test.txt\",\"test2.txt\",\"test3.txt\"]'),(2,1,'test name','7668561d88757964153fd2300c93d73ee6bce0342513f6df685df9addfeb7322','[\"1\",\"2\",\"3\",\"4\"]'),(3,2,'test','hash2','[\"1\",\"2\",\"3\",\"4\"]'),(4,1,'test name 2','hash 2','[\"1\",\"2\",\"3\",\"4\"]');
+INSERT INTO `gbl_chapter` VALUES (1,1,'goods','hash','[\"http://127.0.0.1:7622/storage/get/picture/page1.png\",\"http://127.0.0.1:7622/storage/get/picture/page2.png\",\"http://127.0.0.1:7622/storage/get/picture/page3.png\",\"http://127.0.0.1:7622/storage/get/picture/page4.png\",\"http://127.0.0.1:7622/storage/get/picture/page5.png\"]'),(2,1,'test name','7668561d88757964153fd2300c93d73ee6bce0342513f6df685df9addfeb7322','[\"1\",\"2\",\"3\",\"4\"]'),(3,2,'test','hash2','[\"1\",\"2\",\"3\",\"4\"]'),(4,1,'test name 2','hash 2','[\"1\",\"2\",\"3\",\"4\"]');
 /*!40000 ALTER TABLE `gbl_chapter` ENABLE KEYS */;
 
 #
