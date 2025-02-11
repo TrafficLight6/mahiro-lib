@@ -2,3 +2,4 @@ for-test.txt
 */tmp
 lib-storage/storage/picture/test.jpg
 .gitignore
+lib-web/pages/component-test/*

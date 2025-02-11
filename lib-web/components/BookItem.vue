@@ -4,18 +4,16 @@
             <div class="book-item">
 
                 <div class="book-item-img">
-                    <el-image fit="cover" style="height: 424px;width: 300px;" :src="bookCover" />
+                    <el-image fit="cover" style="height: 424px;width: 300px; padding: 20px" :src="bookCover" />
                 </div>
                 <div class="book-item-info">
                     <div class="book-item-title">
-                        <!-- <p>{{ cutString(bookTitle,20) }}</p> -->
                         <p v-html="cutString(bookTitle, 20)"></p>
                     </div>
                 </div>
 
             </div>
         </el-link>
-
     </div>
 </template>
 
@@ -27,7 +25,6 @@ const bookTitle = props.bookTitle
 let bookCover = props.bookCover.replaceAll('{proxy}', config.public.apiProxy)
 
 const cutString = (rawString, length) => {
-    // return rawString.length > length ? rawString.substring(0, length) + '...' : rawString;
     if (rawString.length > length) {
         if (rawString.length > length * 2) {
             return rawString.substring(0, length) + '<br>' + rawString.substring(length, length * 2) + '...'

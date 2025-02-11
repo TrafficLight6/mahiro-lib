@@ -10,6 +10,22 @@
                 <div class="right-content">
                     <h2>{{ bookTitle }}</h2>
                     <!-- add book info-->
+
+                    <div class="chapter">
+                        <p>Chapter List</p>
+                        <div v-if="BookChapterList == null || BookChapterList.length == 0">
+                            <h1>Sorry,no chapter here</h1>
+                        </div>
+                        <div v-else>
+                            <div v-for="(chapter, index) in BookChapterList">
+                                <br>
+                                <el-link :href="`/home/book/${bookHash}/read/${chapter.chapter_hash}`"><el-button
+                                        style="width: 600px;">{{ index + 1 }}{{ " . " + chapter.chapter_name
+                                        }}</el-button>
+                                </el-link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </el-col>
         </el-row>
@@ -41,6 +57,9 @@ let bookInfo = ref({})
 let bookCover = ref('')
 let bookTitle = ref('')
 
+let BookChapterListResult = ref({})
+let BookChapterList = ref([])
+
 if (!bookHash) {
     useRouter().push('/')
 }
@@ -60,7 +79,7 @@ const getBookInfo = async () => {
         bookInfoResult.value = await result.json()
         bookInfo.value = bookInfoResult.value || {}
 
-        bookCover.value = bookInfo.value.book.book_cover.replaceAll('{proxy}',config.public.apiProxy)
+        bookCover.value = bookInfo.value.book.book_cover.replaceAll('{proxy}', config.public.apiProxy)
         bookTitle.value = bookInfo.value.book.book_name
         // console.log(bookInfo.value)
         // console.log(bookCover.value)
@@ -68,7 +87,7 @@ const getBookInfo = async () => {
     } catch (error) {
         ElNotification({
             title: 'Error',
-            message: 'Search failed!',
+            message: 'Get book info failed!',
             type: 'error',
         })
         console.error('There was a problem with the fetch operation:', error)
@@ -76,8 +95,48 @@ const getBookInfo = async () => {
         bookInfo.value = {}
     }
 }
+const getBookChapterList = async () => {
+    try {
+        const result = await fetch(`${config.public.apiProxy}/book/chapter/getlist?book_hash=${encodeURIComponent(bookHash)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (!result.ok) {
+            throw new Error(`HTTP error! Status: ${result.status}`)
+        }
+        BookChapterListResult.value = await result.json() || {}
+        BookChapterList.value = BookChapterListResult.value.result || []
+        console.log(BookChapterList.value)
+    } catch (error) {
+        ElNotification({
+            title: 'Error',
+            message: 'Get book chapter list failed!',
+            type: 'error',
+        })
+        console.error('There was a problem with the fetch operation:', error)
+        BookChapterListResult.value = {}
+        BookChapterList.value = []
+    }
+}
+
+const handleChapterClick = (chapter) => {
+    try {
+        route.push(`/home/book/${bookHash}/chapter/read/${chapter.chapter_id}`)
+    } catch (error) {
+        ElNotification({
+            title: 'Error',
+            message: 'Failed to navigate to chapter!',
+            type: 'error',
+        })
+        console.error('There was a problem with navigation:', error)
+    }
+}
 
 onMounted(() => {
     getBookInfo()
+    getBookChapterList()
 })
 </script>
